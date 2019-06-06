@@ -36,6 +36,7 @@ private:
 	float m_maxSpeed;
 	double m_currentDirection;
 	float m_turnSpeed;
+	float m_steerForce;
 	glm::vec2 m_target;
 };
 

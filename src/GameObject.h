@@ -14,6 +14,7 @@ enum GameObjectType {
 	OCEAN,
 	SHIP,
 	TARGET,
+	TILE,
 	NUM_OF_TYPES
 };
 
@@ -60,6 +61,7 @@ public:
 	void setIsColliding(bool collision);
 	void setType(GameObjectType newType);
 	void setState(State newState);
+	void setAcceleration(glm::vec2 newAcceleration);
 
 
 private:

@@ -99,3 +99,8 @@ void GameObject::setState(State newState)
 {
 	m_state = newState;
 }
+
+void GameObject::setAcceleration(glm::vec2 newAcceleration)
+{
+	m_acceleration = newAcceleration;
+}

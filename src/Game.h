@@ -14,12 +14,9 @@
 #include "CollisionManager.h"
 
 // Game Objects
-#include "Player.h"
-#include "Island.h"
-#include "Ocean.h"
-#include "Cloud.h"
 #include "ship.h"
 #include "Target.h"
+#include "Tile.h"
 
 class Game
 {
@@ -72,15 +69,25 @@ private:
 	static Game* s_pInstance;
 
 	// GameObjects
-	Player* m_pPlayer;
-	Island* m_pIsland;
-	Ocean* m_pOcean;
-	ship* m_pShip;
+	std::vector<ship*> m_pShips;
 	Target* m_pTarget;
 
-	// cloud game objects
-	int m_cloudNum = 3;
-	std::vector<Cloud*> m_pClouds;
+	// utility functions for ship control
+	void m_createShips();
+	void m_drawShips();
+	void m_updateShips();
+
+	// Tile and Grid variables
+	const int m_rowSize = 20;
+	const int m_colSize = 15;
+	const int m_tileSize = 40;
+	Tile* m_pGrid[20][15]; // grid of tile pointers
+
+	// utility functions for tile and grid
+	void m_createGrid();
+	void m_drawGrid();
+	void m_updateGrid();
+
 
 	void createGameObjects();
 

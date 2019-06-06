@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <ctime>
 
 Game* Game::s_pInstance = 0;
 
@@ -25,18 +26,74 @@ Game::~Game()
 {
 }
 
+void Game::m_createShips()
+{
+	srand((unsigned)time(NULL));  // random seed
+	for (size_t count = 0; count < 5; count++)
+	{
+		ship* newShip = new ship();
+		int randomRow = rand() % m_rowSize;
+		int randomCol = rand() % m_colSize;
+		Tile* tile = m_pGrid[randomRow][randomCol];
+		newShip->setPosition(tile->getPosition());
+		m_pShips.push_back(newShip);
+	}
+}
+
+void Game::m_drawShips()
+{
+	for (ship* ship : m_pShips)
+	{
+		ship->draw();
+	}
+}
+
+void Game::m_updateShips()
+{
+	for (ship* ship : m_pShips)
+	{
+		ship->update();
+	}
+}
+
+void Game::m_createGrid()
+{
+	for (size_t row = 0; row < m_rowSize; row++)
+	{
+		for (size_t col = 0; col < m_colSize; col++)
+		{
+			m_pGrid[row][col] = new Tile(glm::vec2(row * m_tileSize + 20.0f, col * m_tileSize + 20.0f ));
+		}
+	}
+}
+
+void Game::m_drawGrid()
+{
+	for (size_t row = 0; row < m_rowSize; row++)
+	{
+		for (size_t col = 0; col < m_colSize; col++)
+		{
+			m_pGrid[row][col]->draw();
+		}
+	}
+}
+
+void Game::m_updateGrid()
+{
+	for (size_t row = 0; row < m_rowSize; row++)
+	{
+		for (size_t col = 0; col < m_colSize; col++)
+		{
+			m_pGrid[row][col]->update();
+		}
+	}
+}
+
 void Game::createGameObjects()
 {
-	/*m_pPlayer = new Player();
-	m_pIsland = new Island();
-	m_pOcean = new Ocean();
+	m_createGrid();
 
-	for (size_t i = 0; i < m_cloudNum; i++)
-	{
-		m_pClouds.push_back(new Cloud());
-	}
-	*/
-	m_pShip = new ship();
+	m_createShips();
 
 	m_pTarget = new Target();
 }
@@ -100,17 +157,9 @@ void Game::render()
 {
 	SDL_RenderClear(m_pRenderer); // clear the renderer to the draw colour
 
-	/*m_pOcean->draw();
-	m_pIsland->draw();
-	m_pPlayer->draw();
-
-	for (Cloud* cloud : m_pClouds) {
-		cloud->draw();
-	}
-	*/
-
+	m_drawGrid();
 	m_pTarget->draw();
-	m_pShip->draw();
+	m_drawShips();
 
 	
 
@@ -119,18 +168,9 @@ void Game::render()
 
 void Game::update()
 {
-	/*m_pPlayer->update();
-	m_pIsland->update();
-	m_pOcean->update();
-	
-	Collision::squaredRadiusCheck(m_pPlayer, m_pIsland);
+	m_updateGrid();
 
-	for (Cloud* cloud : m_pClouds) {
-		cloud->update();
-		Collision::squaredRadiusCheck(m_pPlayer, cloud);
-	}
-	*/
-	m_pShip->update();
+	m_updateShips();
 
 	m_pTarget->update();
 
@@ -177,22 +217,6 @@ void Game::handleEvents()
 				case SDLK_d:
 					m_pTarget->setVelocity(glm::vec2(1.0f, m_pTarget->getVelocity().y));
 					break;
-				case SDLK_0:
-					m_pShip->setState(State::IDLE);
-					break;
-				case SDLK_1:
-					m_pShip->setState(State::SEEK);
-					break;
-				case SDLK_2:
-					m_pShip->setState(State::ARRIVE);
-					break;
-				case SDLK_3:
-					m_pShip->setState(State::AVOID);
-					break;
-				case SDLK_4:
-					m_pShip->setState(State::FLEE);
-					break;
-
 			}
 			break;
 		case SDL_KEYUP:
