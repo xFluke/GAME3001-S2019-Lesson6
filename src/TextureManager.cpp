@@ -206,6 +206,36 @@ void TextureManager::drawFrame(std::string id, int x, int y, int currentRow, int
 	SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, angle, 0, flip);
 }
 
+void TextureManager::drawText(std::string id, int x, int y, SDL_Renderer * pRenderer, double angle, int alpha, bool centered, SDL_RendererFlip flip)
+{
+	SDL_Rect srcRect;
+	SDL_Rect destRect;
+
+	srcRect.x = 0;
+	srcRect.y = 0;
+
+	int textureWidth, textureHeight;
+
+	SDL_QueryTexture(m_textureMap[id], NULL, NULL, &textureWidth, &textureHeight);
+
+	srcRect.w = destRect.w = textureWidth;
+	srcRect.h = destRect.h = textureHeight;
+
+	if (centered) {
+		int xOffset = textureWidth * 0.5;
+		int yOffset = textureHeight * 0.5;
+		destRect.x = x - xOffset;
+		destRect.y = y - yOffset;
+	}
+	else {
+		destRect.x = x;
+		destRect.y = y;
+	}
+
+	SDL_SetTextureAlphaMod(m_textureMap[id], alpha);
+	SDL_RenderCopyEx(pRenderer, m_textureMap[id], &srcRect, &destRect, angle, 0, flip);
+}
+
 glm::vec2 TextureManager::getTextureSize(std::string id)
 {
 	int width, height;
@@ -229,3 +259,14 @@ void TextureManager::setColour(std::string id, Uint8 red, Uint8 green, Uint8 blu
 	SDL_Texture* pTexture = m_textureMap[id];
 	SDL_SetTextureColorMod(pTexture, red, green, blue);
 }
+
+void TextureManager::addTexture(std::string id, SDL_Texture * texture)
+{
+	m_textureMap[id] = texture;
+}
+
+SDL_Texture * TextureManager::getTexture(std::string id)
+{
+	return m_textureMap[id];
+}
+

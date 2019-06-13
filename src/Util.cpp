@@ -159,8 +159,8 @@ float Util::repeat(float t, float length)
 }
 
 float Util::RandomRange(float min, float max)
-{
-	return rand() * (max - min + 1) + min;
+{	
+	return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min)));
 }
 
 /**

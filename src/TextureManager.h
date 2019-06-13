@@ -40,11 +40,16 @@ public:
 	void drawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* pRenderer, double angle, int alpha, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	void drawFrame(std::string id, int x, int y, int currentRow, int currentFrame, SDL_Renderer* pRenderer, double angle, int alpha, bool centered = false, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
+	void drawText(std::string id, int x, int y, SDL_Renderer* pRenderer, double angle, int alpha, bool centered = false, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
 	glm::vec2 getTextureSize(std::string id);
 
 	void setAlpha(std::string id, Uint8 newAlpha);
 
 	void setColour(std::string id, Uint8 red, Uint8 green, Uint8 blue);
+
+	void addTexture(std::string id, SDL_Texture* texture);
+	SDL_Texture* getTexture(std::string id);
 
 private:
 

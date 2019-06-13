@@ -6,14 +6,10 @@
 #include <string>
 
 enum GameObjectType {
-	ISLAND,
-	PLAYER,
-	CLOUD,
-	BULLET,
-	ENEMY,
-	OCEAN,
 	SHIP,
 	TARGET,
+	PLANET,
+	MINE,
 	TILE,
 	NUM_OF_TYPES
 };

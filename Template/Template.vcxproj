@@ -94,12 +94,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)include\GLM\;$(SolutionDir)include\SDL\include\;$(SolutionDir)include\SDL_Image\include\;$(SolutionDir)include\SDL_Mixer\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\;$(SolutionDir)include\GLM\;$(SolutionDir)include\SDL\include\;$(SolutionDir)include\SDL_Image\include\;$(SolutionDir)include\SDL_Mixer\include\;$(SolutionDir)include\SDL2_ttf\include\;$(SolutionDir)include\IMGUI\;$(SolutionDir)include\IMGU_SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut_static.lib;DevIL.lib;ILU.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut_static.lib;DevIL.lib;ILU.lib;glew32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>
@@ -156,14 +156,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Cloud.cpp" />
+    <ClCompile Include="..\include\IMGUI\imgui.cpp" />
+    <ClCompile Include="..\include\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="..\include\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="..\include\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="..\include\IMGUI_SDL\imgui_sdl.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
+    <ClCompile Include="..\src\FontManager.cpp" />
     <ClCompile Include="..\src\Game.cpp" />
     <ClCompile Include="..\src\GameObject.cpp" />
-    <ClCompile Include="..\src\Island.cpp" />
+    <ClCompile Include="..\src\Label.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\Ocean.cpp" />
-    <ClCompile Include="..\src\Player.cpp" />
+    <ClCompile Include="..\src\Mine.cpp" />
+    <ClCompile Include="..\src\Planet.cpp" />
     <ClCompile Include="..\src\ship.cpp" />
     <ClCompile Include="..\src\SoundManager.cpp" />
     <ClCompile Include="..\src\Target.cpp" />
@@ -172,18 +177,27 @@
     <ClCompile Include="..\src\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Cloud.h" />
+    <ClInclude Include="..\include\IMGUI\imconfig.h" />
+    <ClInclude Include="..\include\IMGUI\imgui.h" />
+    <ClInclude Include="..\include\IMGUI\imgui_internal.h" />
+    <ClInclude Include="..\include\IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="..\include\IMGUI\imstb_textedit.h" />
+    <ClInclude Include="..\include\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="..\include\IMGUI_SDL\imgui_sdl.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
+    <ClInclude Include="..\src\Config.h" />
+    <ClInclude Include="..\src\FontManager.h" />
     <ClInclude Include="..\src\Game.h" />
     <ClInclude Include="..\src\GameObject.h" />
-    <ClInclude Include="..\src\Island.h" />
-    <ClInclude Include="..\src\Ocean.h" />
-    <ClInclude Include="..\src\Player.h" />
+    <ClInclude Include="..\src\Label.h" />
+    <ClInclude Include="..\src\Mine.h" />
+    <ClInclude Include="..\src\Planet.h" />
     <ClInclude Include="..\src\ship.h" />
     <ClInclude Include="..\src\SoundManager.h" />
     <ClInclude Include="..\src\Target.h" />
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Tile.h" />
+    <ClInclude Include="..\src\TileComparators.h" />
     <ClInclude Include="..\src\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

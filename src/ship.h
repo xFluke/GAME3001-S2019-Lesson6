@@ -2,16 +2,19 @@
 #ifndef __Ship__
 #define __Ship__
 
+#include <vector>
+
 #include "GameObject.h"
 #include "TextureManager.h"
 #include "SoundManager.h"
+#include "Tile.h"
 
-class ship :
+class Ship :
 	public GameObject
 {
 public:
-	ship();
-	~ship();
+	Ship();
+	~Ship();
 
 	// Inherited via GameObject
 	void draw() override;
@@ -24,8 +27,14 @@ public:
 	void turnLeft();
 	void move();
 
+	// pathfinding behaviours
+	Tile* getTile();
+	void setTile(Tile* newTile);
+
+
 private:
-	
+
+
 	void m_checkState();
 	void m_checkBounds();
 
@@ -38,6 +47,8 @@ private:
 	float m_turnSpeed;
 	float m_steerForce;
 	glm::vec2 m_target;
+
+	Tile* m_currentTile;
 };
 
 

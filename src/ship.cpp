@@ -4,7 +4,7 @@
 #include "GLM/gtx/rotate_vector.hpp"
 
 
-ship::ship()
+Ship::Ship()
 {
 	TheTextureManager::Instance()->load("../Assets/textures/ship3.png",
 		"ship", TheGame::Instance()->getRenderer());
@@ -19,7 +19,7 @@ ship::ship()
 	setIsColliding(false);
 	setType(GameObjectType::SHIP);
 	setState(State::IDLE);
-	m_maxSpeed = 1.0f;
+	m_maxSpeed = 5.0f;
 	m_currentDirection = 0.0;
 	m_turnSpeed = 2.0f;
 	m_steerForce = 0.1f;
@@ -33,11 +33,11 @@ ship::ship()
 }
 
 
-ship::~ship()
+Ship::~Ship()
 {
 }
 
-void ship::draw()
+void Ship::draw()
 {
 	int xComponent = getPosition().x;
 	int yComponent = getPosition().y;
@@ -46,7 +46,7 @@ void ship::draw()
 		TheGame::Instance()->getRenderer(), m_currentDirection, 255, true);
 }
 
-void ship::m_checkState()
+void Ship::m_checkState()
 {
 	switch (getState())
 	{
@@ -66,20 +66,23 @@ void ship::m_checkState()
 	}
 }
 
-void ship::update()
+void Ship::update()
 {
 	/*m_checkState();
 	
 	m_checkBounds();*/
 
 	//std::cout << "current Direction:" << m_currentDirection << std::endl;
+	//m_seek();
+	move();
+	//m_checkBounds();
 }
 
-void ship::clean()
+void Ship::clean()
 {
 }
 
-void ship::turnRight()
+void Ship::turnRight()
 {
 	m_currentDirection += m_turnSpeed;
 	if (m_currentDirection >= 360) 
@@ -89,7 +92,7 @@ void ship::turnRight()
 
 }
 
-void ship::turnLeft()
+void Ship::turnLeft()
 {
 	m_currentDirection -= m_turnSpeed;
 	if (m_currentDirection < 0)
@@ -98,28 +101,43 @@ void ship::turnLeft()
 	}
 }
 
-void ship::move()
+void Ship::move()
 {
-	
-
-	
-
-	float currentDirectionInRadians = m_currentDirection * Util::Deg2Rad;
+	/*float currentDirectionInRadians = m_currentDirection * Util::Deg2Rad;
 	float velocityX = cos(currentDirectionInRadians) * m_maxSpeed;
-	float velocityY = sin(currentDirectionInRadians) * m_maxSpeed;
+	float velocityY = sin(currentDirectionInRadians) * m_maxSpeed;*/
 
 
-	glm::vec2 newVelocity = glm::vec2(velocityX, velocityY) + getAcceleration();
+	//glm::vec2 newVelocity = glm::vec2(velocityX, velocityY) + getAcceleration();
+	/*glm::vec2 newVelocity =getVelocity() + getAcceleration();
 	setVelocity(newVelocity);
-	setVelocity(Util::limitMagnitude(getVelocity(), m_maxSpeed));
+	setVelocity(Util::limitMagnitude(getVelocity(), m_maxSpeed));*/
+
+	m_target = TheGame::Instance()->getTargetPosition();
+
+	if (Util::distance(getPosition(), m_target) > 1.0f) {
+		glm::vec2 desired = Util::normalize(m_target - getPosition()) * m_maxSpeed;
+		setVelocity(desired);
 
 
-	glm::vec2 newPosition = getPosition() + getVelocity();
-	setPosition(newPosition);
+		glm::vec2 newPosition = getPosition() + getVelocity();
+		setPosition(newPosition);
+	}
+	
 
 }
 
-void ship::m_checkBounds()
+Tile * Ship::getTile()
+{
+	return m_currentTile;
+}
+
+void Ship::setTile(Tile* newTile)
+{
+	m_currentTile = newTile;
+}
+
+void Ship::m_checkBounds()
 {
 	//float distance = Util::distance(getPosition(), TheGame::Instance()->getTargetPosition());
 	////std::cout << "distance: " << distance << std::endl;
@@ -151,7 +169,7 @@ void ship::m_checkBounds()
 
 }
 
-void ship::m_reset()
+void Ship::m_reset()
 {
 	setIsColliding(false);
 	int halfWidth = getWidth() * 0.5;
@@ -160,7 +178,7 @@ void ship::m_reset()
 	setPosition(glm::vec2(xComponent, yComponent));
 }
 
-void ship::m_seek()
+void Ship::m_seek()
 {
 	m_target = TheGame::Instance()->getTargetPosition();
 	glm::vec2 desired = Util::normalize(m_target - getPosition()) * m_maxSpeed;
@@ -170,47 +188,47 @@ void ship::m_seek()
 	setAcceleration(steer);
 
 
-	glm::vec2 targetDirection = m_target - getPosition();
+	/*glm::vec2 targetDirection = m_target - getPosition();
 	
 	if (Util::squaredMagnitude(targetDirection) > 0.0f) 
 	{
 		targetDirection = Util::normalize(targetDirection);
-	}
+	}*/
 
 
 
 	////glm::vec2 offset = m_target;
-	double desiredDirection;
-	if (targetDirection.x * targetDirection.x + targetDirection.y * targetDirection.y > 0) 
-	{
-		desiredDirection = atan2(-targetDirection.x, -targetDirection.y);
-		
-		desiredDirection *= Util::Rad2Deg; // convert to degrees
-		
-		desiredDirection +=90.0f;
+	//double desiredDirection;
+	//if (targetDirection.x * targetDirection.x + targetDirection.y * targetDirection.y > 0) 
+	//{
+	//	desiredDirection = atan2(-targetDirection.x, -targetDirection.y);
+	//	
+	//	desiredDirection *= Util::Rad2Deg; // convert to degrees
+	//	
+	//	desiredDirection +=90.0f;
 
-		
-		std::cout << "Desired Direction : " << desiredDirection << std::endl;
+	//	
+	//	std::cout << "Desired Direction : " << desiredDirection << std::endl;
 
-		/*std::cout << "=============================" << std::endl;
-		std::cout << "Current Direction : " << m_currentDirection << std::endl;
-		std::cout << "Desired Direction : " << desiredDirection << std::endl;
-		std::cout << "Desired Direction - current: " << desiredDirection - m_currentDirection << std::endl;
-		std::cout << "Current Velocity-X : " << getVelocity().x << std::endl;
-		std::cout << "Current Velocity-Y : " << getVelocity().y << std::endl;
-		std::cout << "=============================" << std::endl;*/
+	//	std::cout << "=============================" << std::endl;
+	//	std::cout << "Current Direction : " << m_currentDirection << std::endl;
+	//	std::cout << "Desired Direction : " << desiredDirection << std::endl;
+	//	std::cout << "Desired Direction - current: " << desiredDirection - m_currentDirection << std::endl;
+	//	std::cout << "Current Velocity-X : " << getVelocity().x << std::endl;
+	//	std::cout << "Current Velocity-Y : " << getVelocity().y << std::endl;
+	//	std::cout << "=============================" << std::endl;
 
-		if (desiredDirection - m_currentDirection > 0)
-		{
-			turnRight();
-		}
-		else if (desiredDirection - m_currentDirection < 0)
-		{
-			turnLeft();
-		}
+	//	if (desiredDirection - m_currentDirection > 0)
+	//	{
+	//		turnRight();
+	//	}
+	//	else if (desiredDirection - m_currentDirection < 0)
+	//	{
+	//		turnLeft();
+	//	}
 
-	//	move();
-	}
+	////	move();
+	//}
 	//else {
 	//	desiredDirection = 0.0;
 	//	m_currentDirection = desiredDirection;

@@ -28,6 +28,7 @@ int main(int argc, char * args[])
 {
 
 	Uint32 frameStart, frameTime;
+	UINT32 frames = 0;
 
 
 	// show console
@@ -50,6 +51,9 @@ int main(int argc, char * args[])
 		{
 			SDL_Delay((int)(DELAY_TIME - frameTime));
 		}
+
+		frames++;
+		TheGame::Instance()->setFrames(frames);
 
 	}
 
